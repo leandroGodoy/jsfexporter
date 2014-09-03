@@ -15,7 +15,7 @@
 	<name>Lapis JSF Exporter Parent</name>
 	<description>Parent POM for JSF Exporter modules</description>
 	<url>https://github.com/rdicroce/jsfexporter</url>
-	<inceptionYear>2013</inceptionYear>
+	<inceptionYear>2013</inceptionYear>  
 	<organization>
 		<name>Lapis Software Associates</name>
 		<url>http://www.lapis.com</url>
