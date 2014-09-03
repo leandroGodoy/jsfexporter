@@ -19,7 +19,9 @@
  */
 package com.lapis.jsfexporter.test;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,10 +31,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import com.lapis.jsfexporter.csv.CSVExportOptions;
+import com.lapis.jsfexporter.pdf.PdfExportOptions;
 import com.lapis.jsfexporter.primefaces.datalist.DataListExportOptions;
 import com.lapis.jsfexporter.primefaces.datalist.DataListExportRange;
 import com.lapis.jsfexporter.primefaces.datatable.DataTableExportOptions;
 import com.lapis.jsfexporter.primefaces.datatable.DataTableExportRange;
+import com.lowagie.text.BadElementException;
 
 @ManagedBean
 @ViewScoped
@@ -78,4 +82,11 @@ public class NonLazyTableBean {
 		return cars;
 	}
 	
+
+	public PdfExportOptions getFileOptions() throws BadElementException,
+			MalformedURLException, IOException {
+		return new PdfExportOptions("The Pdf Title Here",
+				" The subTitle, or filters used in search for construct table result ", "/images/logTypeTest.gif");
+	}
+
 }
