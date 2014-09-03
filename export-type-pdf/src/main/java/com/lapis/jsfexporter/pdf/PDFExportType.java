@@ -47,7 +47,7 @@ public class PDFExportType implements
 	private ByteArrayOutputStream buffer;
 	private PdfExportOptions options;
 	PdfWriter writer;
-
+ 
 	public PDFExportType(PdfExportOptions options) {
 		this.options = options;
 		document = new Document();
