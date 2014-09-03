@@ -53,7 +53,7 @@ public class DataTableExportSource implements IExportSource<HtmlDataTable, Void>
 	public int getColumnCount(HtmlDataTable source, Void configOptions) {
 		int columnCount = 0;
 		for (UIComponent child : source.getChildren()) {
-			if (child instanceof UIColumn && child.isRendered()) {
+			if (child instanceof UIColumn && child.isRendered()&& !child.getId().startsWith("action")) {
 				columnCount++;
 			}
 		}
@@ -64,7 +64,7 @@ public class DataTableExportSource implements IExportSource<HtmlDataTable, Void>
 	public void exportData(HtmlDataTable source, Void configOptions, IExportType<?, ?, ?> exporter, FacesContext context) throws Exception {
 		List<UIColumn> columns = new ArrayList<UIColumn>();
 		for (UIComponent child : source.getChildren()) {
-			if (child instanceof UIColumn && child.isRendered()) {
+			if (child instanceof UIColumn && child.isRendered()&& !child.getId().startsWith("action")) {
 				columns.add((UIColumn) child);
 			}
 		}

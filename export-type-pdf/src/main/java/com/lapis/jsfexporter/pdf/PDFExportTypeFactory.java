@@ -23,16 +23,16 @@ import com.lapis.jsfexporter.api.IExportType;
 import com.lapis.jsfexporter.spi.IExportTypeFactory;
 import com.lowagie.text.Document;
 
-public class PDFExportTypeFactory implements IExportTypeFactory<Document, Void, Integer> {
+public class PDFExportTypeFactory implements IExportTypeFactory<Document, PdfExportOptions, Integer> {
 
 	@Override
-	public IExportType<Document, Void, Integer> createNewExporter(Void configOptions) {
-		return new PDFExportType();
+	public IExportType<Document, PdfExportOptions, Integer> createNewExporter(PdfExportOptions configOptions) {
+		return new PDFExportType(configOptions);
 	}
 
 	@Override
-	public Void getDefaultConfigOptions() {
-		return null;
+	public PdfExportOptions getDefaultConfigOptions() {
+		return new PdfExportOptions();
 	}
 
 	@Override

@@ -31,41 +31,52 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Phrase;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-public class PDFExportType implements IExportType<Document, Void, Integer> {
+public class PDFExportType implements
+		IExportType<Document, PdfExportOptions, Integer> {
 
 	private Document document;
 	private PdfPTable table;
 	private Font font;
 	private int rowCount;
 	private ByteArrayOutputStream buffer;
-	
-	public PDFExportType() {
+	private PdfExportOptions options;
+	PdfWriter writer;
+
+	public PDFExportType(PdfExportOptions options) {
+		this.options = options;
 		document = new Document();
-		font = FontFactory.getFont("fonts/DroidSansFallbackFull.ttf", BaseFont.IDENTITY_H, true);
+		font = FontFactory.getFont("fonts/DroidSansFallbackFull.ttf",
+				BaseFont.IDENTITY_H, true);
 		buffer = new ByteArrayOutputStream();
 		try {
-			PdfWriter.getInstance(document, buffer);
+			writer = PdfWriter.getInstance(document, buffer);
+			writer.setBoxSize("art", new Rectangle(25, 25, 559, 788));
+
 		} catch (DocumentException e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	@Override
 	public Document getContext() {
 		return document;
 	}
-	
+
 	@Override
 	public void beginExport(int columnCount) {
+		if (options != null)
+			writer.setPageEvent(new PrintPageEvent(options));
 		table = new PdfPTable(columnCount);
 		if (!document.isOpen()) {
 			document.open();
 		}
+
 	}
 
 	@Override
@@ -77,7 +88,7 @@ public class PDFExportType implements IExportType<Document, Void, Integer> {
 			pdfCell.setPhrase(new Phrase(cell.getValue(), font));
 			table.addCell(pdfCell);
 		}
-		
+
 		return rowCount++;
 	}
 
@@ -89,13 +100,13 @@ public class PDFExportType implements IExportType<Document, Void, Integer> {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	@Override
 	public void writeExport(ExternalContext externalContext) throws Exception {
 		document.close();
 		buffer.writeTo(externalContext.getResponseOutputStream());
 	}
-	
+
 	@Override
 	public String getContentType() {
 		return "application/pdf";
